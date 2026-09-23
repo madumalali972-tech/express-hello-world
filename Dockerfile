@@ -1,17 +1,13 @@
-FROM node:7.7-alpine
-MAINTAINER Jatin Shridhar <shridhar.jatin@gmail.com>
+FROM node:22-alpine
 
-# install deps
-ADD package.json /tmp/package.json
-RUN cd /tmp && npm install
+WORKDIR /app
 
-# Copy deps
-RUN mkdir -p /opt/hello-world-app && cp -a /tmp/node_modules /opt/hello-world-app
+COPY package*.json ./
 
-# Setup workdir
-WORKDIR /opt/hello-world-app
-COPY . /opt/hello-world-app
+RUN npm ci
 
-# run
+COPY . .
+
 EXPOSE 3000
+
 CMD ["npm", "start"]
